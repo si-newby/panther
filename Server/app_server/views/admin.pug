@@ -1,0 +1,112 @@
+extends layout
+block content
+ .container
+  .row
+   .col-12.col-md-6
+    .row.banner.text-left
+     .col-12
+      h1 Server Controls
+    .row
+     .col-12 
+      form.form-rounded(method="post", role="form")
+       //- Tag input
+       .form-group.row
+         .col-sm-3.col-form-label
+          label(for="tag") Log Tag:
+         .col-sm-5
+          input#tag.form-control(type="text" name='job_tag' value=tm.getTag())
+         .col-sm-4
+          .form-check.form-check-inline
+           input#clearLog.form-check-input(type="checkbox" name='clearLog_checkbox' value="y")
+           label(for="clearLog") Clear Log
+       //- Get Task URL
+       .form-group.row
+        .col-sm-3.col-form-label
+         label(for="getTaskURL") Get Task URL:
+        .col-sm-9
+         input#getTaskURL.form-control(type="text" name='get_task_url' value=tm.getGetTaskURL())
+        //- Post Task URL
+       .form-group.row
+        .col-sm-3.col-form-label
+         label(for="postTaskURL") Post Task URL:
+        .col-sm-9
+         input#postTaskURL.form-control(type="text" name='post_task_url' value=tm.getPostTaskURL())
+        //- Current Script
+       .form-group.row
+        .col-sm-3.col-form-label
+         label(for="taskScript") Post Task URL:
+        .col-sm-9
+         select#taskScript.form-control(name='task_script')
+          option(value='pi_ws.js' selected = taskScript == 'pi_ws.js') pi_ws.js
+          option(value='pi_xhr.js' selected = taskScript == 'pi_xhr.js') pi_xhr.js
+          option(value='mandelbrot_ws.js' selected = taskScript == 'mandelbrot_ws.js') mandelbrot_ws.js
+          option(value='mandelbrot_xhr.js' selected = taskScript == 'mandelbrot_xhr.js') mandelbrot_xhr.js
+        //- Task Cache Size
+       .form-group.row
+        .col-sm-3.col-form-label
+         label(for="postTaskURL") Cache Size:
+        .col-sm-3
+         input#postTaskURL.form-control(type="number" name='cache_size' value=tm.getTaskCacheSize())
+        .col-6
+         .form-check.form-check-inline
+          input#refillCache.form-check-input(type="radio", name="refill_checkbox")
+          label.form-check-label(for="refill_checkbox") Refill Cache
+         .form-check.form-check-inline
+          input#clearCache.form-check-input(type="radio", name="clear_checkbox")
+          label.form-check-label(for="clear_checkbox") Clear Cache
+       .form-group.row
+        .col-sm-4.col-form-label
+         label(for="taskSendAmount") Task Send Amount: 
+        .col-sm-2
+         select#taskSendAmount.form-control(name="task_send_amount")
+          option(value='1' selected = tm.getClientTaskSendAmount() == '1') 1
+          option(value='2' selected = tm.getClientTaskSendAmount() == '2') 2
+          option(value='3' selected = tm.getClientTaskSendAmount() == '3') 3
+          option(value='4' selected = tm.getClientTaskSendAmount() == '4') 4
+          option(value='5' selected = tm.getClientTaskSendAmount() == '5') 5
+          option(value='10' selected = tm.getClientTaskSendAmount() == '10') 10
+          option(value='20' selected = tm.getClientTaskSendAmount() == '20') 20
+        .col-sm-4.col-form-label
+         label(for="taskBufferAmount") Request Task At: 
+        .col-sm-2 
+         select#taskBufferAmount.form-control(name="task_refill_amount")
+          option(value='-1' selected = tm.getClientRequestRefillAmount() == '-1') -1
+          option(value='0' selected = tm.getClientRequestRefillAmount() == '0') 0
+          option(value='1' selected = tm.getClientRequestRefillAmount() == '1') 1
+          option(value='2' selected = tm.getClientRequestRefillAmount() == '2') 2
+          option(value='3' selected = tm.getClientRequestRefillAmount() == '3') 3
+          option(value='4' selected = tm.getClientRequestRefillAmount() == '4') 4 
+       .form-group.row
+        .col
+         button.btn.btn-primary.float-right(type="Submit") Submit   
+    
+   .col-12.col-md-6
+    .row.banner.text-left
+     .col-12
+      h1 Response
+    // Tasks Progress Bar
+    .row
+     .col-2
+      label Tasks:
+     .col-10
+      div#taskProgress.progress
+       div#taskProgressBar.progress-bar(role="progressbar" aria-valuenow= tm.getCachePercent() aria-valuemin="0" aria-valuemax="100" style="width: " + tm.getCachePercent() + "%")
+        span#taskProgressText
+    // Memory Progress Bar
+    .row
+     .col-2
+      label Memory:
+     .col-10
+      div#memoryProgress.progress
+       div#memoryProgressBar.progress-bar(role="progressbar" aria-valuenow=mem  aria-valuemin="0" aria-valuemax="100" style="width: " + mem + "%")
+        span#memoryProgressText #{mem}% 
+    // Server Update Response    
+    .row.text-left
+     .col-12
+       ul#response-list
+        if response
+         each val in response
+          li= val
+
+ script(src='/javascripts/response_list.js')
+ script(src='/javascripts/progressbar.js')

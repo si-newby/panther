@@ -1,0 +1,24 @@
+extends layout
+
+block content
+
+ <p>Session ID: <output id="sessionID"></output></p>
+ <p>Completed Tasks: <output id="taskCount"></output></p>
+ <p>Last Task ID: <output id="taskID"></output></p>
+ <p>Total Throws: <output id="taskThrows"></output></p>
+ <p>Total Hits: <output id="taskHits"></output></p>
+ <p>PI estimate: <output id="taskEst"></output></p>
+
+ script
+  | var worker = new Worker("../javascripts/pi.js");    
+  | var fu = function(event){ 
+  |     document.getElementById("taskCount").textContent = event.data[1]; 
+  |     document.getElementById("taskID").textContent = event.data[0];
+  |     document.getElementById("taskThrows").textContent = event.data[2];
+  |     document.getElementById("taskHits").textContent = event.data[3];
+  |     document.getElementById("taskEst").textContent = event.data[4];
+  |     document.getElementById("sessionID").textContent = event.data[5];
+  | };
+  | worker.onmessage = fu;
+
+  
